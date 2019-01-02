@@ -54,21 +54,31 @@ func (thisRef *ExpressServer) Run(ipPort string) {
 
 	// Static paths
 	for k, v := range thisRef.staticPathRewrites {
-		router.PathPrefix(k).Handler(http.StripPrefix(
-			k,
-			http.FileServer(http.Dir(thisRef.rootFolder+v)),
+		var from = k
+		var to = thisRef.rootFolder + v
+
+		fmt.Println(fmt.Sprintf("Static paths: FROM [%s] TO [%s]", from, to))
+
+		router.PathPrefix(from).Handler(http.StripPrefix(from,
+			http.FileServer(http.Dir(to)),
 		))
 	}
 
 	// Static files
 	for k, v := range thisRef.staticFilesRewrites {
-		router.Handle(k, func() http.Handler {
+		var from = k
+		var to = thisRef.rootFolder + v
+
+		fmt.Println(fmt.Sprintf("Static files: FROM [%s] TO [%s]", from, to))
+
+		router.Handle(from, func() http.Handler {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				http.ServeFile(w, r, thisRef.rootFolder+v)
+				http.ServeFile(w, r, to)
 			})
 		}())
 	}
 
+	// template-bundle
 	router.Handle(
 		"/template-bundle",
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -92,7 +102,9 @@ func (thisRef *ExpressServer) Run(ipPort string) {
 		return
 	}
 
-	jmS.NewMixedServer(thisRef.servers).RunOnExistingListenerAndRouter(listener, router)
+	server := jmS.NewMixedServer(thisRef.servers)
+	server.PrepareRoutes(router)
+	server.RunOnExistingListenerAndRouter(listener, router, true)
 }
 
 // RenderTemplate -
