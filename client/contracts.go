@@ -1,14 +1,18 @@
-package clients
+package client
 
 import (
 	"go.isomorphicgo.org/go/isokit"
 	"honnef.co/go/js/dom"
 )
 
-// ClientAppContext -
-type ClientAppContext struct {
-	TemplateSet          *isokit.TemplateSet
-	Window               dom.Window
-	Document             dom.Document
-	PageContentContainer dom.Element
+// ExpressHandler -
+type ExpressHandler func()
+
+// ExpressClient -
+type ExpressClient struct {
+	templateSet  *isokit.TemplateSet
+	handlers     map[string]isokit.Handler
+	Window       dom.Window
+	Document     dom.Document
+	AppContainer dom.Element
 }
