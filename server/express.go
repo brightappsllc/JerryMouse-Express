@@ -95,7 +95,7 @@ func (thisRef *ExpressServer) Run(ipPort string) {
 	)
 
 	// Listen and RUN
-	listener, err := net.Listen("tcp", ipPort)
+	listener, err := net.Listen("tcp4", ipPort)
 	if err != nil {
 		fmt.Printf("Can't RUN: %s", err.Error())
 
