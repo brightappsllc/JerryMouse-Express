@@ -52,6 +52,9 @@ func (thisRef *ExpressServer) Run(ipPort string) {
 
 	router := mux.NewRouter()
 
+	server := jmS.NewMixedServer(thisRef.servers)
+	server.PrepareRoutes(router)
+
 	// Static paths
 	for k, v := range thisRef.staticPathRewrites {
 		var from = k
@@ -102,8 +105,6 @@ func (thisRef *ExpressServer) Run(ipPort string) {
 		return
 	}
 
-	server := jmS.NewMixedServer(thisRef.servers)
-	server.PrepareRoutes(router)
 	server.RunOnExistingListenerAndRouter(listener, router, true)
 }
 
