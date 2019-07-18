@@ -68,11 +68,11 @@ func GetExpressClient() *ExpressClient {
 // 	}
 // }
 
-// func (rtc *RealtimeClient) ConnectToPeer(url url.URL, realtimeHandler *RealtimeHandler) {
+// func (rtc *RealtimeClient) ConnectToPeer(url url.URL, WebScoketsHandler *WebScoketsHandler) {
 // 	c, _, err := websocket.DefaultDialer.Dial(url.String(), nil)
 // 	if err != nil {
 // 		log.Fatal("dial:", err)
 // 	}
 
-// 	helpers_RealtimeCommunicationHandler(c, realtimeHandler)
+// 	helpers_RealtimeCommunicationHandler(c, WebScoketsHandler)
 // }
